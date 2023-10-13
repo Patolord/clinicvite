@@ -1,22 +1,22 @@
-import { Dialog } from '@headlessui/react';
-import { useEffect, useRef, useState, React } from 'react';
+import { useEffect, useState, React } from 'react';
 import { useAuthState } from '~/components/contexts/UserContext';
-import { SignInButton } from '~/components/domain/auth/SignInButton';
-import { SignOutButton } from '~/components/domain/auth/SignOutButton';
+
 import { Head } from '~/components/shared/Head';
 import { useFirestore } from '~/lib/firebase';
-import { collection, query, getDocs, addDoc } from 'firebase/firestore';
+import { collection, query, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-type Tool = {
+import ToolCard from '../shared/ToolCard';
+
+export type Tool = {
   id: string;
   title: string;
   description: string;
   url: string;
 };
 
-enum InputEnum {
+export enum InputEnum {
   Id = 'id',
   Title = 'title',
   Description = 'description',
@@ -44,12 +44,36 @@ function Index() {
       querySnapshot.forEach((doc) => {
         fetchedData.push({ id: doc.id, ...doc.data() } as Tool);
       });
-      console.table(fetchedData);
+
       setTools(fetchedData);
     }
 
     fetchData();
   }, []);
+
+  const onUpdateTool = (id: string, data: Partial<Tool>) => {
+    const docRef = doc(firestore, 'tools', id);
+    updateDoc(docRef, data)
+      .then((docRef) => {
+        toast('🦄 Wow so easy!', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleInputChange = (field: InputEnum, value: string) => {
+    setInputData({ ...inputData, [field]: value });
+  };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,7 +86,8 @@ function Index() {
         description: inputData.description,
         url: inputData.url,
       };
-      await addDoc(toolsCollections, newTool);
+      const docRef = await addDoc(toolsCollections, newTool);
+
       toast('🦄 Wow so easy!', {
         position: 'top-right',
         autoClose: 5000,
@@ -74,21 +99,11 @@ function Index() {
         theme: 'light',
       });
 
-      setTools([...tools, newTool as Tool]);
+      setTools([...tools, { ...(newTool as Tool) }]);
       setInputData({ title: '', description: '', url: '' });
     } catch (error) {
       setFormError(true);
     }
-
-    //  save data to firestore
-
-    //  update state of tools
-
-    //  clear form
-  };
-
-  const handleInputChange = (field: InputEnum, value: string) => {
-    setInputData({ ...inputData, [field]: value });
   };
 
   return (
@@ -127,14 +142,7 @@ function Index() {
           </form>
           <div className="grid grid-cols-3 gap-4 w-full bg-transparent text-slate-50">
             {tools.map((tool) => (
-              <div
-                key={tool.id}
-                className="h-48 rounded-md shadow-slate-900 shadow-md p-4 bg-gradient-to-r from-slate-800 to-slate-700"
-              >
-                <div className="">{tool.title}</div>
-                <div className="">{tool.description}</div>
-                <div className="">{tool.url}</div>
-              </div>
+              <ToolCard key={tool.id} tool={tool} onUpdate={onUpdateTool} />
             ))}
           </div>
         </div>
