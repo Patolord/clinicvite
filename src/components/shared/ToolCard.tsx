@@ -33,11 +33,11 @@ const ToolCard = ({ tool, onUpdate }: ToolCardProps) => {
   return (
     <div
       key={tool.id}
-      className="h-48 group relative rounded-md flex flex-col justify-between shadow-slate-900 shadow-md p-4 bg-gradient-to-r from-slate-800 to-slate-700"
+      className="group relative flex h-48 flex-col justify-between rounded-md bg-gradient-to-r from-slate-800 to-slate-700 p-4 shadow-md shadow-slate-900"
     >
       <div>
         <input
-          className={clsx(inputClasses, 'text-xl mb-2 font-bold text-slate-50', {
+          className={clsx(inputClasses, 'mb-2 text-xl font-bold text-slate-50', {
             'bg-gray-900': isEdit,
             'cursor-text': isEdit,
           })}
@@ -59,18 +59,19 @@ const ToolCard = ({ tool, onUpdate }: ToolCardProps) => {
         <>
           <CheckIcon
             onClick={handleUpdate}
-            className="h-6 w-6 text-green-500  absolute top-4 right-12 cursor-pointer "
+            className="absolute right-12 top-4  h-6 w-6 cursor-pointer text-green-500 "
           />
-          <XCircleIcon onClick={onClose} className="h-6 w-6 text-red-900   absolute top-4 right-4 cursor-pointer " />
+          <XCircleIcon onClick={onClose} className="absolute right-4 top-4   h-6 w-6 cursor-pointer text-red-900 " />
         </>
       ) : (
         <button
           onClick={toggleIsEdit}
-          className="btn btn-active btn-ghost hidden group-hover:block absolute top-4 right-4 p-0"
+          className="btn btn-active btn-ghost absolute right-4 top-4 hidden p-0 group-hover:block"
         >
-          <PencilSquareIcon className="text-slate-100 w-6 h-6 cursor-pointer" />
+          <PencilSquareIcon className="h-6 w-6 cursor-pointer text-slate-100" />
         </button>
       )}
+      <button className="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3">...</button>
     </div>
   );
 };

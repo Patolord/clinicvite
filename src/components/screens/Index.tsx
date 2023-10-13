@@ -117,30 +117,30 @@ function Index() {
               onChange={(e) => handleInputChange(InputEnum.Title, e.target.value)}
               value={inputData.title}
               placeholder="title"
-              className="m-4 text-slate-50 bg-transparent border border-slate-700 focus:ring-slate-400 focus:outline-none p-4 rounded-lg"
+              className="m-4 rounded-lg border border-slate-700 bg-transparent p-4 text-slate-50 focus:outline-none focus:ring-slate-400"
             />
             <input
               type="text"
               onChange={(e) => handleInputChange(InputEnum.Description, e.target.value)}
               value={inputData.description}
               placeholder="description"
-              className="m-4 text-slate-50 bg-transparent border border-slate-700 focus:ring-slate-400 focus:outline-none p-4 rounded-lg"
+              className="m-4 rounded-lg border border-slate-700 bg-transparent p-4 text-slate-50 focus:outline-none focus:ring-slate-400"
             />
             <input
               type="text"
               onChange={(e) => handleInputChange(InputEnum.Url, e.target.value)}
               value={inputData.url}
               placeholder="url"
-              className="m-4 text-slate-50 bg-transparent border border-slate-700 focus:ring-slate-400 focus:outline-none p-4 rounded-lg"
+              className="m-4 rounded-lg border border-slate-700 bg-transparent p-4 text-slate-50 focus:outline-none focus:ring-slate-400"
             />
             <button
               type="submit"
-              className="m-4 text-slate-50 border border-purple-500 p-5 rounded-lg bg-purple-600 bg-opacity-30 transition-opacity hover:bg-opacity-50 "
+              className="m-4 rounded-lg border border-purple-500 bg-purple-600 bg-opacity-30 p-5 text-slate-50 transition-opacity hover:bg-opacity-50 "
             >
               Add new tool
             </button>
           </form>
-          <div className="grid grid-cols-3 gap-4 w-full bg-transparent text-slate-50">
+          <div className="grid w-full grid-cols-3 gap-4 bg-transparent text-slate-50">
             {tools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} onUpdate={onUpdateTool} />
             ))}
